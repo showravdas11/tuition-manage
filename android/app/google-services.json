@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "835129198842",
+    "project_id": "tuition-manage-1285c",
+    "storage_bucket": "tuition-manage-1285c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:835129198842:android:9224a5d4965879803a2143",
+        "android_client_info": {
+          "package_name": "com.example.tuition_manage"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQkrtlHjCnyiFDui__Fi_-wMyCu8K9vyM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

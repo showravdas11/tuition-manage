@@ -13,6 +13,7 @@ class MyTheme {
 
   // colors
 
-  static Color canvousColor = Color(0xFFF0F8FF);
+  static Color canvousColor = Color(0xFFFBE8B5);
+  static Color canvousColorPrimary = Color(0xFFFAFBFD);
   static Color buttonColor = Color(0xFFF6C953);
 }

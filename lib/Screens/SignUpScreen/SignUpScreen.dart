@@ -1,4 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -26,12 +27,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool remeberdPassword = true;
   BuildContext? dialogContext;
 
+  Future addUserDetails(
+      String name, String email, UserCredential? userCredential) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential?.user?.uid)
+          .set({
+        'name': name,
+        'email': email,
+        'timestamp': FieldValue.serverTimestamp(),
+        'img': ""
+      });
+    } catch (e) {
+      print('Adding user data error: $e');
+    }
+  }
+
   signUp(String name, String email, String password,
       String confirmPassword) async {
     if (password != confirmPassword) {
-      // Passwords don't match, show alert
-
-      return AwesomeDialog(
+      AwesomeDialog(
         context: context,
         dialogType: DialogType.error,
         animType: AnimType.rightSlide,
@@ -39,29 +55,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
         btnOkColor: MyTheme.buttonColor,
         btnOkOnPress: () {},
       )..show();
-    } else {
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          dialogContext = context;
-          return const AlertDialog(
-            backgroundColor: Colors.transparent,
-            content: SpinKitCircle(color: Colors.white, size: 50.0),
-          );
-        },
-      );
+      return;
     }
 
-    UserCredential? userCredential;
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        dialogContext = context;
+        return const AlertDialog(
+          backgroundColor: Colors.transparent,
+          content: SpinKitCircle(color: Colors.white, size: 50.0),
+        );
+      },
+    );
+
     try {
-      userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) => Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MainScreen())));
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+      await addUserDetails(name, email, userCredential);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MainScreen()),
+      );
     } on FirebaseAuthException catch (ex) {
       Navigator.pop(dialogContext!);
-      return AwesomeDialog(
+      AwesomeDialog(
         context: context,
         dialogType: DialogType.error,
         animType: AnimType.rightSlide,

@@ -124,9 +124,14 @@ class _TuitionCardState extends State<TuitionCard> {
                     ),
                     onPressed: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CardDetailsScreen()));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CardDetailsScreen(
+                            tuition: widget.tuition,
+                            tuitionId: widget.documentId,
+                          ),
+                        ),
+                      );
                     },
                   ),
                 ],

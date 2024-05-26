@@ -32,25 +32,32 @@ class _TuitionCardState extends State<TuitionCard> {
     final screenHeight = MediaQuery.of(context).size.height;
     final cardWidth = screenWidth * 0.9;
     final cardHeight = screenHeight * 0.25;
-    final imageWidth = cardHeight * 0.5;
 
     return Card(
-      elevation: 3,
+      elevation: 6,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(15.0),
       ),
       child: Container(
         width: cardWidth,
         height: cardHeight,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          image: DecorationImage(
-            image: AssetImage(
-                'assets/images/card3.jpg'), // Replace 'assets/background_image.jpg' with your image path
-            fit: BoxFit.cover,
+          borderRadius: BorderRadius.circular(15.0),
+          // color: Color(0xFF1E1E1E),
+          gradient: LinearGradient(
+            colors: [Color.fromARGB(255, 84, 84, 84), Color(0xFF1E1E1E)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 10,
+              offset: Offset(0, 5),
+            ),
+          ],
         ),
-        padding: EdgeInsets.all(screenWidth * 0.03),
+        padding: EdgeInsets.all(screenWidth * 0.04),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -62,19 +69,19 @@ class _TuitionCardState extends State<TuitionCard> {
                 children: [
                   buildTextWithIcon(
                     icon: Iconsax.user,
-                    text: "${'Student Name'}: ${widget.tuition["studentName"]}",
+                    text: "Student Name: ${widget.tuition["studentName"]}",
                     screenWidth: screenWidth,
                   ),
                   SizedBox(height: screenHeight * 0.01),
                   buildTextWithIcon(
                     icon: Iconsax.location,
-                    text: "${'Location'}: ${widget.tuition["location"]}",
+                    text: "Location: ${widget.tuition["location"]}",
                     screenWidth: screenWidth,
                   ),
                   SizedBox(height: screenHeight * 0.01),
                   buildTextWithIcon(
                     icon: Iconsax.mobile,
-                    text: "${'Phone'}: ${widget.tuition["phone"]}",
+                    text: "Phone: ${widget.tuition["phone"]}",
                     screenWidth: screenWidth,
                   ),
                   SizedBox(height: screenHeight * 0.01),
@@ -92,36 +99,34 @@ class _TuitionCardState extends State<TuitionCard> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.edit,
-                      color: Colors.green,
-                    ),
+                  buildActionIcon(
+                    icon: Icons.edit,
+                    color: Colors.green,
+                    tooltip: 'Edit',
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => EditTuitionScreen(
-                              tuition: widget.tuition,
-                              tuitionId: widget.documentId),
+                            tuition: widget.tuition,
+                            tuitionId: widget.documentId,
+                          ),
                         ),
                       );
                     },
                   ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.delete,
-                      color: Colors.red,
-                    ),
+                  buildActionIcon(
+                    icon: Icons.delete,
+                    color: Colors.red,
+                    tooltip: 'Delete',
                     onPressed: () {
                       _showDeleteConfirmationDialog(context);
                     },
                   ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.info,
-                      color: Colors.blueAccent,
-                    ),
+                  buildActionIcon(
+                    icon: Icons.info,
+                    color: Colors.blueAccent,
+                    tooltip: 'Details',
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -152,21 +157,41 @@ class _TuitionCardState extends State<TuitionCard> {
       children: [
         Icon(
           icon,
-          size: 20,
+          size: 24,
+          color: Colors.white,
         ),
         SizedBox(width: screenWidth * 0.03),
         Flexible(
           child: Text(
             text,
             style: TextStyle(
-              fontSize: screenWidth * 0.04,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF585858),
+              fontSize: screenWidth * 0.045,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
             ),
             maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
       ],
+    );
+  }
+
+  Widget buildActionIcon({
+    required IconData icon,
+    required Color color,
+    required String tooltip,
+    required VoidCallback onPressed,
+  }) {
+    return Tooltip(
+      message: tooltip,
+      child: CircleAvatar(
+        backgroundColor: Colors.white,
+        child: IconButton(
+          icon: Icon(icon, color: color),
+          onPressed: onPressed,
+        ),
+      ),
     );
   }
 

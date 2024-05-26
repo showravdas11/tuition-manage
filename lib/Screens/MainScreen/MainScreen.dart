@@ -35,7 +35,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xFFFBE8B5),
+        backgroundColor: const Color(0xFFFDDBD1),
         body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
@@ -44,8 +44,8 @@ class _MainScreenState extends State<MainScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(50.0),
           ),
-          backgroundColor: Colors.black,
-          foregroundColor: MyTheme.buttonColor,
+          backgroundColor: MyTheme.buttonColor,
+          foregroundColor: Colors.white,
           elevation: 0,
           // mini: true,
         ),
@@ -182,187 +182,224 @@ class _MainScreenState extends State<MainScreen> {
           elevation: 0.0,
           backgroundColor: Colors.transparent,
           child: SingleChildScrollView(
-            child: Container(
-              padding: const EdgeInsets.all(20.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(20.0),
-                boxShadow: [
-                  const BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 10.0,
-                    offset: Offset(0.0, 10.0),
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.all(20.0),
+                  margin: const EdgeInsets.only(top: 45.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(20.0),
+                    boxShadow: [
+                      const BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 10.0,
+                        offset: Offset(0.0, 10.0),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const Text(
-                    'Add Tuition',
-                    style: TextStyle(
-                      fontSize: 22.0,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextField(
-                    labelText: "Student Name",
-                    hintText: "Enter Student Name",
-                    controller: studentController,
-                    suffixIcon: const Icon(Iconsax.user),
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextField(
-                    labelText: "Location",
-                    hintText: "Enter Location",
-                    controller: locationController,
-                    suffixIcon: const Icon(Iconsax.location),
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextField(
-                    labelText: "Phone",
-                    hintText: "Enter Phone Number",
-                    controller: phoneController,
-                    suffixIcon: const Icon(Iconsax.mobile),
-                  ),
-                  const SizedBox(height: 20.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 30,
+                      ),
+                      const Text(
+                        'Add Tuition',
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w900,
+                          color: Color(0xFF575757),
+                        ),
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextField(
+                        labelText: "Student Name",
+                        hintText: "Enter Student Name",
+                        controller: studentController,
+                        suffixIcon:
+                            const Icon(Iconsax.user, color: Color(0xFF1E1E1E)),
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextField(
+                        labelText: "Location",
+                        hintText: "Enter Location",
+                        controller: locationController,
+                        suffixIcon: const Icon(Iconsax.location,
+                            color: Color(0xFF1E1E1E)),
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextField(
+                        labelText: "Phone",
+                        hintText: "Enter Phone Number",
+                        controller: phoneController,
+                        suffixIcon: const Icon(Iconsax.mobile,
+                            color: Color(0xFF1E1E1E)),
+                      ),
+                      const SizedBox(height: 20.0),
 
-                  //------select year field-------------//
-                  Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 15),
-                        decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(showYear),
-                            GestureDetector(
-                              onTap: () {
-                                selectYear(context);
-                              },
-                              child: const Icon(Icons.calendar_month),
+                      //------select year field-------------//
+                      Column(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 15),
+                            decoration: BoxDecoration(
+                              color: Colors.deepPurple[50],
+                              border: Border.all(color: Color(0xFF1E1E1E)),
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                          ],
-                        ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  showYear,
+                                  style:
+                                      const TextStyle(color: Color(0xFF1E1E1E)),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    selectYear(context);
+                                  },
+                                  child: const Icon(Icons.calendar_month,
+                                      color: Color(0xFF1E1E1E)),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+
+                          //-------------Select month field----------------//
+                          Container(
+                            height: 50,
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            decoration: BoxDecoration(
+                              color: Colors.deepPurple[50],
+                              border: Border.all(color: Color(0xFF1E1E1E)),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: DropdownButtonFormField<String>(
+                              value: selectMonth,
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  selectMonth = newValue;
+                                });
+                              },
+                              items: [
+                                'January',
+                                'February',
+                                'March',
+                                'April',
+                                'May',
+                                'June',
+                                'July',
+                                'August',
+                                'September',
+                                'October',
+                                'November',
+                                'December',
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: const TextStyle(
+                                      color: Color(0xFF1E1E1E),
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "Select Month",
+                                hintStyle: TextStyle(color: Color(0xFF1E1E1E)),
+                                alignLabelWithHint: true,
+                                iconColor: Color(0xFF1E1E1E),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 20),
-
-                      //-------------Select month field----------------//
-                      Container(
-                        height: 50,
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: DropdownButtonFormField<String>(
-                          value: selectMonth,
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectMonth = newValue;
-                            });
-                          },
-                          items: [
-                            'January',
-                            'February',
-                            'March',
-                            'April',
-                            'May',
-                            'June',
-                            'July',
-                            'August',
-                            'September',
-                            'October',
-                            'November',
-                            'December',
-                          ].map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: const TextStyle(
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "Select Month",
-                            hintStyle: TextStyle(),
-                            alignLabelWithHint: true,
-                            iconColor: Color(0xFF7E59FD),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('Cancel',
+                                style: TextStyle(color: Color(0xFF1E1E1E))),
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text('Cancel'),
-                      ),
-                      const SizedBox(width: 10.0),
-                      ElevatedButton(
-                        onPressed: () {
-                          if (showYear != "Select Year") {
-                            print("Select Year");
-                          } else {
-                            print("Did Not Select Year");
-                          }
-                          if (phoneController.text.trim().isEmpty ||
-                              studentController.text.trim().isEmpty ||
-                              locationController.text.trim().isEmpty ||
-                              selectMonth == null ||
-                              _selectedYear == "") {
-                            AwesomeDialog(
-                              context: context,
-                              dialogType: DialogType.info,
-                              animType: AnimType.rightSlide,
-                              title: 'Enter Required Fields',
-                              btnOkColor: MyTheme.buttonColor,
-                              btnOkOnPress: () {},
-                            ).show();
-                          } else {
-                            addTuition(
-                              studentController.text.trim(),
-                              locationController.text.trim(),
-                              phoneController.text.trim(),
-                              selectMonth ?? "",
-                              _selectedYear.year.toString(),
-                              FirebaseAuth.instance.currentUser!.email!,
-                            );
+                          const SizedBox(width: 10.0),
+                          ElevatedButton(
+                            onPressed: () {
+                              if (showYear != "Select Year") {
+                                print("Select Year");
+                              } else {
+                                print("Did Not Select Year");
+                              }
+                              if (phoneController.text.trim().isEmpty ||
+                                  studentController.text.trim().isEmpty ||
+                                  locationController.text.trim().isEmpty ||
+                                  selectMonth == null ||
+                                  _selectedYear == "") {
+                                AwesomeDialog(
+                                  context: context,
+                                  dialogType: DialogType.info,
+                                  animType: AnimType.rightSlide,
+                                  title: 'Enter Required Fields',
+                                  btnOkColor: Color(0xFF1E1E1E),
+                                  btnOkOnPress: () {},
+                                ).show();
+                              } else {
+                                addTuition(
+                                  studentController.text.trim(),
+                                  locationController.text.trim(),
+                                  phoneController.text.trim(),
+                                  selectMonth ?? "",
+                                  _selectedYear.year.toString(),
+                                  FirebaseAuth.instance.currentUser!.email!,
+                                );
 
-                            AwesomeDialog(
-                              context: context,
-                              dialogType: DialogType.success,
-                              animType: AnimType.rightSlide,
-                              title: 'Lecture Added Successfully',
-                              btnOkColor: MyTheme.buttonColor,
-                              btnOkOnPress: () {
-                                Navigator.pop(context);
-                              },
-                            ).show();
-                          }
-                        },
-                        child: const Text('Add'),
+                                AwesomeDialog(
+                                  context: context,
+                                  dialogType: DialogType.success,
+                                  animType: AnimType.rightSlide,
+                                  title: 'Lecture Added Successfully',
+                                  btnOkColor: Color(0xFF1E1E1E),
+                                  btnOkOnPress: () {
+                                    Navigator.pop(context);
+                                  },
+                                ).show();
+                              }
+                            },
+                            child: const Text('Add',
+                                style: TextStyle(color: Colors.white)),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF1E1E1E),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+                Positioned(
+                  left: 20,
+                  right: 20,
+                  child: CircleAvatar(
+                    backgroundColor: Color(0xFF1E1E1E),
+                    radius: 45,
+                    child: Icon(Icons.school, size: 50, color: Colors.white),
+                  ),
+                ),
+              ],
             ),
           ),
         );

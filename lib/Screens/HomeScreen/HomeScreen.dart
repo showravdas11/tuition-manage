@@ -17,11 +17,16 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFE6E6E6),
       appBar: AppBar(
-        scrolledUnderElevation: 0,
-        centerTitle: true,
-        title: Image.asset('assets/images/Logo.png', fit: BoxFit.cover),
-        leading: Icon(Icons.line_weight_sharp),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.menu, color: Colors.black),
+          onPressed: () {
+            // Add your menu functionality here
+          },
+        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -32,60 +37,60 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               });
             },
-            icon: Icon(Icons.logout),
+            icon: Icon(Icons.logout, color: Colors.black),
           ),
         ],
+        centerTitle: true,
+        title: Image.asset(
+          'assets/images/Logo.png',
+          fit: BoxFit.contain,
+          height: 30,
+        ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Expanded(
-            flex: 0,
-            child: SizedBox(
-              height: 10,
-            ),
+      body: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
           ),
-          Expanded(
-            flex: 10,
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              decoration: const BoxDecoration(
-                color: Color(0xFFFBE8B5),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                ),
-              ),
-              child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('tuition')
-                    .where('userEmail', isEqualTo: _auth.currentUser!.email)
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        var tuition = snapshot.data!.docs[index].data()
-                            as Map<String, dynamic>;
-                        ;
-                        final documentId = snapshot.data!.docs[index].id;
-                        return TuitionCard(
-                          tuition: tuition,
-                          documentId: documentId,
-                        );
-                      },
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('tuition')
+                .where('userEmail', isEqualTo: _auth.currentUser!.email)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    var tuition = snapshot.data!.docs[index].data()
+                        as Map<String, dynamic>;
+                    final documentId = snapshot.data!.docs[index].id;
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: TuitionCard(
+                        tuition: tuition,
+                        documentId: documentId,
+                      ),
                     );
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                },
-              ),
-            ),
+                  },
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
           ),
-        ],
+        ),
       ),
     );
   }

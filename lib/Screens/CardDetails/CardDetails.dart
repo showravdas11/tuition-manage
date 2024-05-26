@@ -26,10 +26,8 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
   Set<DateTime> selectedDates = Set<DateTime>();
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final DateFormat _dateFormat =
-      DateFormat('MMMM yyyy'); // Month and year format
-  final DateFormat _dayMonthYearFormat =
-      DateFormat('d MMMM yyyy'); // Day, month, year format
+  final DateFormat _dateFormat = DateFormat('MMMM yyyy');
+  final DateFormat _dayMonthYearFormat = DateFormat('d MMMM yyyy');
 
   void _onDaySelected(DateTime day, DateTime focusedDay) {
     setState(() {
@@ -79,20 +77,45 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return Container(
-          height: 400,
-          child: TableCalendar(
-            focusedDay: focusedDay,
-            firstDay: firstDay,
-            lastDay: lastDay,
-            onDaySelected: _onDaySelected,
-            calendarFormat: CalendarFormat.month,
-            selectedDayPredicate: (day) => selectedDates.contains(day),
-            headerStyle: const HeaderStyle(
-              formatButtonVisible: false,
-              titleCentered: true,
-            ),
-          ),
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              height: 400,
+              child: TableCalendar(
+                focusedDay: focusedDay,
+                firstDay: firstDay,
+                lastDay: lastDay,
+                onDaySelected: (selectedDay, focusedDay) {
+                  setState(() {
+                    if (selectedDates.contains(selectedDay)) {
+                      selectedDates.remove(selectedDay);
+                      _removeDateFromFirestore(selectedDay);
+                    } else {
+                      selectedDates.add(selectedDay);
+                      _addDateToFirestore(selectedDay);
+                    }
+                  });
+                },
+                calendarFormat: CalendarFormat.month,
+                selectedDayPredicate: (day) => selectedDates.contains(day),
+                headerStyle: const HeaderStyle(
+                  formatButtonVisible: false,
+                  titleCentered: true,
+                ),
+                calendarStyle: const CalendarStyle(
+                  isTodayHighlighted: true,
+                  selectedDecoration: BoxDecoration(
+                    color: Colors.blue,
+                    shape: BoxShape.circle,
+                  ),
+                  todayDecoration: BoxDecoration(
+                    color: Colors.orange,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            );
+          },
         );
       },
     );
@@ -144,6 +167,20 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
     }
   }
 
+  void _fetchSelectedDate() async {
+    QuerySnapshot querySnapshot = await _firestore
+        .collection('tuition')
+        .doc(widget.tuitionId)
+        .collection('dates')
+        .get();
+
+    setState(() {
+      selectedDates = querySnapshot.docs.map((doc) {
+        return _dayMonthYearFormat.parse(doc['date']);
+      }).toSet();
+    });
+  }
+
   @override
   void dispose() {
     _animationController.dispose();
@@ -173,7 +210,10 @@ class _CardDetailsScreenState extends State<CardDetailsScreen>
                     gradient: const LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [Color(0xFF0675C1), Color(0xFF014473)],
+                      colors: [
+                        Color(0xFF413F4A),
+                        Color.fromARGB(255, 37, 37, 37)
+                      ],
                     ),
                     borderRadius: BorderRadius.circular(15),
                   ),

@@ -14,7 +14,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFFFAF9FE),
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
         body: Stack(
           children: [
             Positioned(
@@ -25,7 +25,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
                 height: 300,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Color(0xFFFFE59E),
+                  color: Color(0xFF1E1E1E),
                 ),
               ),
             ),
@@ -37,7 +37,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
                 height: 400,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Color(0xFFFFF1E4),
+                  color: Color.fromARGB(199, 30, 30, 30),
                 ),
               ),
             ),

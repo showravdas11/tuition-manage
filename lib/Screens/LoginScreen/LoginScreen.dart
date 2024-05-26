@@ -59,14 +59,9 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xFFF3F3F5),
         body: Stack(
           children: [
-            Positioned.fill(
-              child: Image.asset(
-                "assets/images/bg1.jpg", // Adjust path to your image
-                fit: BoxFit.cover,
-              ),
-            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -81,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Container(
                     padding: const EdgeInsets.all(25),
                     decoration: const BoxDecoration(
-                      color: Color(0xFFFBE8B5),
+                      color: Color.fromARGB(255, 255, 255, 255),
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(40),
                         topRight: Radius.circular(40),
@@ -95,9 +90,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             const Text(
                               "Welcome Back",
                               style: TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w900,
-                                  color: Color(0xFF575757)),
+                                fontSize: 30,
+                                fontWeight: FontWeight.w900,
+                                color: Color(0xFF575757),
+                              ),
                             ),
                             const SizedBox(
                               height: 20,

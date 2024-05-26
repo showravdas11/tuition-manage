@@ -202,17 +202,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     left: 10,
                     child: Row(
                       children: [
-                        IconButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            color: Colors.white,
-                          ),
-                        ),
                         Text(
-                          "Edit Profile".tr,
+                          "Edit Profile",
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 18,
